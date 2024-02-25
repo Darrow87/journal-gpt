@@ -19,6 +19,11 @@ class EntriesController < ApplicationController
     def show
       @entry = Entry.find(params[:id])
     end
+
+    def index
+      # Fetch all entries belonging to the current user
+      @entries = current_user.entries.order(date: :desc)
+    end
   
     private
   
