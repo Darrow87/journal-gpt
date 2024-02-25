@@ -1,0 +1,37 @@
+<%# app/views/entries/index.html.erb %>
+
+<h1>Journal Entries</h1>
+
+<%= link_to 'New Journal Entry', new_entry_path, class: 'btn btn-primary' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Date</th>
+      <th>Summary</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @entries.each do |entry| %>
+      <tr>
+        <td><%= entry.title %></td>
+        <td><%= entry.date.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%# Assuming 'resolution' is a key in the 'content' JSONB that holds a summary of the response %>
+          <%= truncate(entry.content['resolution'], length: 100) %>
+        </td>
+        <td>
+          <%= link_to 'View', entry_path(entry), class: 'btn btn-sm btn-info' %>
+          <%= link_to 'Edit', edit_entry_path(entry), class: 'btn btn-sm btn-warning' %>
+          <%= link_to 'Delete', entry_path(entry), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @entries.empty? %>
+  <p>No journal entries have been created.</p>
+<% end %>
