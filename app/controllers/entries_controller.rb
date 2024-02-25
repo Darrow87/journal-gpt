@@ -7,15 +7,20 @@ class EntriesController < ApplicationController
   
     def create
       @entry = current_user.entries.build(entry_params)
-      @entry.content = generate_chatgpt_responses(@entry.content)
-  
+      chatgpt_response = generate_chatgpt_responses(@entry.content)
+    
+      # Here's where you'd update the content with the ChatGPT response
+      @entry.content.merge!("chatgpt_response" => chatgpt_response)
+    
       if @entry.save
         redirect_to @entry, notice: 'Your entry has been saved successfully.'
       else
         render :new
       end
     end
-  
+    
+ 
+
     def show
       @entry = Entry.find(params[:id])
     end
@@ -34,10 +39,10 @@ class EntriesController < ApplicationController
       prompt = generate_chatgpt_prompt(content)
   
       response = HTTParty.post(
-        Rails.application.credentials.chatgpt[:endpoint],
+        Rails.application.credentials.dig(:chatgpt, :endpoint),
         headers: {
           "Content-Type" => "application/json",
-          "Authorization" => "Bearer #{Rails.application.credentials.chatgpt[:api_key]}"
+          "Authorization" => "Bearer #{Rails.application.credentials.dig(:chatgpt, :api_key)}"
         },
         body: {
           prompt: prompt,

@@ -1,0 +1,41 @@
+<%# app/views/entries/show.html.erb %>
+
+<h1>Journal Entry Details</h1>
+
+<div>
+  <strong>Title:</strong>
+  <%= @entry.title %>
+</div>
+
+<div>
+  <strong>Date:</strong>
+  <%= @entry.date.strftime("%B %d, %Y") %>
+</div>
+
+<div>
+  <strong>Challenge:</strong>
+  <%= @entry.content["challenge"] %>
+</div>
+
+<div>
+  <strong>Feelings:</strong>
+  <%= @entry.content["feelings"] %>
+</div>
+
+<div>
+  <strong>Resolution:</strong>
+  <%= @entry.content["resolution"] %>
+</div>
+
+<!-- Display ChatGPT Response -->
+<% if @entry.content["chatgpt_response"].present? %>
+  <div>
+    <strong>ChatGPT Response:</strong>
+    <%= @entry.content["chatgpt_response"] %>
+  </div>
+<% else %>
+  <div>No ChatGPT response available.</div>
+<% end %>
+
+<%= link_to 'Edit', edit_entry_path(@entry) %> |
+<%= link_to 'Back to Entries', entries_path %>
