@@ -1,15 +1,21 @@
 <%= form_with model: @entry, local: true do |form| %>
-  <%= form.label :title %>
+  <%= form.label :title, "Entry Title" %>
   <%= form.text_field :title %>
 
-  <%= form.label :date %>
+  <%= form.label :date, "Date" %>
   <%= form.date_select :date %>
 
-  <%= fields_for :content do |content_fields| %>
-    <%= content_fields.label :challenge, "What is a challenge you faced?" %>
-    <%= content_fields.text_field :challenge %>
+  <h3>Journal Questions</h3>
+  <%# Assuming @entry has a content attribute initialized as a hash %>
+  <%= form.fields_for :content do |content_fields| %>
+    <%= content_fields.label :challenge, "1) Briefly describe a challenge you faced today:" %>
+    <%= content_fields.text_area :challenge %>
 
-    <!-- Add more questions as needed -->
+    <%= content_fields.label :feelings, "2) How did that challenge make you feel?" %>
+    <%= content_fields.text_area :feelings %>
+
+    <%= content_fields.label :resolution, "3) What is the best case resolution to that challenge?" %>
+    <%= content_fields.text_area :resolution %>
   <% end %>
 
   <%= form.submit "Submit" %>
