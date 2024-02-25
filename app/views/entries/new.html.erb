@@ -1,0 +1,16 @@
+<%= form_with model: @entry, local: true do |form| %>
+  <%= form.label :title %>
+  <%= form.text_field :title %>
+
+  <%= form.label :date %>
+  <%= form.date_select :date %>
+
+  <%= fields_for :content do |content_fields| %>
+    <%= content_fields.label :challenge, "What is a challenge you faced?" %>
+    <%= content_fields.text_field :challenge %>
+
+    <!-- Add more questions as needed -->
+  <% end %>
+
+  <%= form.submit "Submit" %>
+<% end %>

@@ -1,27 +1,13 @@
-class Entry
-  include ActiveModel::Model
-  include ActiveModel::Validations
+# Migration for Entry model
+class CreateEntries < ActiveRecord::Migration[6.0]
+  def change
+    create_table :entries do |t|
+      t.string :title
+      t.date :date
+      t.jsonb :content, default: {}
+      t.references :user, null: false, foreign_key: true
 
-  attr_accessor :title, :body, :date, :user
-
-  validates :title, presence: true
-  validates :body, presence: true
-  validates :date, presence: true
-
-  def initialize(attributes = {})
-    @title = attributes[:title]
-    @body = attributes[:body]
-    @date = attributes[:date]
-    @user = attributes[:user]
-  end
-
-  def submit
-    if valid?
-      # Here you would make the API call to ChatGPT with the entry data
-      # For example: ChatGPTService.generate_response(self)
-      true
-    else
-      false
+      t.timestamps
     end
   end
 end
