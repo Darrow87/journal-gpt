@@ -5,6 +5,10 @@ ruby "3.2.2"
 #add postgresql gem
 gem 'pg'
 
+gem 'pry'
+gem 'pry-rails'
+gem 'pry-byebug'
+
 #add devise for user authentication
 gem 'devise'
 

@@ -6,6 +6,7 @@ class EntriesController < ApplicationController
     end
   
     def create
+      byebug
       @entry = current_user.entries.build(entry_params)
       chatgpt_response = generate_chatgpt_responses(@entry.content)
     
@@ -37,33 +38,34 @@ class EntriesController < ApplicationController
   
     def generate_chatgpt_responses(content)
       prompt = generate_chatgpt_prompt(content)
-  
+      
       response = HTTParty.post(
-        Rails.application.credentials.dig(:chatgpt, :endpoint),
+        Rails.application.credentials.dig(:chatgpt, :endpoint) + "/chat/completions",
         headers: {
           "Content-Type" => "application/json",
           "Authorization" => "Bearer #{Rails.application.credentials.dig(:chatgpt, :api_key)}"
         },
         body: {
-          prompt: prompt,
-          max_tokens: 500, # Adjust based on your needs
-          stop: ["\n", "\n\n"], # Optional: Define stopping criteria
+          model: "gpt-3.5-turbo", # Adjust model as necessary
+          messages: [
+            {role: "user", content: prompt}
+          ]
         }.to_json
       )
-  
+      
       if response.success?
         response_body = JSON.parse(response.body)
-        # Assuming the response structure contains a 'choices' array with text responses
+        # Extract and return the desired information from response_body based on the API's response structure
         response_body["choices"].first["text"].strip
       else
-        # Handle error or fallback
-        content # Return original content or a meaningful error message
+        Rails.logger.error("ChatGPT API request failed: #{response.body}")
+        nil # Return nil or a default response as a fallback
       end
     rescue => e
       Rails.logger.error("Failed to fetch ChatGPT responses: #{e.message}")
-      # Handle exception
-      content # Return original content or a meaningful error message
+      nil # Return nil or a default response as a fallback
     end
+    
   
     def generate_chatgpt_prompt(content)
       challenge = content["challenge"]
