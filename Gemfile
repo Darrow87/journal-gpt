@@ -8,6 +8,8 @@ gem 'pg'
 gem 'pry'
 gem 'pry-rails'
 gem 'pry-byebug'
+gem 'httparty'
+
 
 #add devise for user authentication
 gem 'devise'

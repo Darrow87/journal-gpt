@@ -38,7 +38,7 @@ class EntriesController < ApplicationController
   
     def generate_chatgpt_responses(content)
       prompt = generate_chatgpt_prompt(content)
-      
+      byebug
       response = HTTParty.post(
         Rails.application.credentials.dig(:chatgpt, :endpoint) + "/chat/completions",
         headers: {
@@ -55,12 +55,13 @@ class EntriesController < ApplicationController
       
       if response.success?
         response_body = JSON.parse(response.body)
-        # Extract and return the desired information from response_body based on the API's response structure
-        response_body["choices"].first["text"].strip
+        # Adjusted to match the actual response structure
+        chatgpt_response = response_body["choices"].first["message"]["content"].strip
       else
         Rails.logger.error("ChatGPT API request failed: #{response.body}")
         nil # Return nil or a default response as a fallback
       end
+      
     rescue => e
       Rails.logger.error("Failed to fetch ChatGPT responses: #{e.message}")
       nil # Return nil or a default response as a fallback

@@ -9,7 +9,10 @@
     <tr>
       <th>Title</th>
       <th>Date</th>
-      <th>Summary</th>
+      <th>Challenge</th>
+      <th>Feelings</th>
+      <th>Resolution</th>
+      <th>ChatGPT Response</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -18,10 +21,10 @@
       <tr>
         <td><%= entry.title %></td>
         <td><%= entry.date.strftime("%Y-%m-%d") %></td>
-        <td>
-          <%# Assuming 'resolution' is a key in the 'content' JSONB that holds a summary of the response %>
-          <%= truncate(entry.content['resolution'], length: 100) %>
-        </td>
+        <td><%= truncate(entry.content['challenge'], length: 100) if entry.content['challenge'].present? %></td>
+        <td><%= truncate(entry.content['feelings'], length: 100) if entry.content['feelings'].present? %></td>
+        <td><%= truncate(entry.content['resolution'], length: 100) if entry.content['resolution'].present? %></td>
+        <td><%= truncate(entry.content['chatgpt_response'], length: 100) if entry.content['chatgpt_response'].present? %></td>
         <td>
           <%= link_to 'View', entry_path(entry), class: 'btn btn-sm btn-info' %>
           <%= link_to 'Edit', edit_entry_path(entry), class: 'btn btn-sm btn-warning' %>
