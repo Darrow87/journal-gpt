@@ -18,8 +18,10 @@ class Entry < ApplicationRecord
 
   # Custom validation to check the structure of the content JSONB field
   def validate_content_structure
-    unless content.is_a?(Hash) && content.keys.sort == ["challenge", "feelings", "resolution"].sort
+    expected_keys = ["challenge", "feelings", "resolution", "chatgpt_response"].sort
+    unless content.is_a?(Hash) && (content.keys - expected_keys).empty? && (expected_keys - content.keys).empty?
       errors.add(:content, "must include the correct structure")
     end
   end
+  
 end

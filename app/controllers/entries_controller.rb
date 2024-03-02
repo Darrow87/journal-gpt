@@ -38,7 +38,6 @@ class EntriesController < ApplicationController
   
     def generate_chatgpt_responses(content)
       prompt = generate_chatgpt_prompt(content)
-      byebug
       response = HTTParty.post(
         Rails.application.credentials.dig(:chatgpt, :endpoint) + "/chat/completions",
         headers: {
