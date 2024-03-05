@@ -2,12 +2,10 @@
 require 'httparty'
 
 namespace :openai do
-  desc "Upload a file to OpenAI"
-  task :upload_file, [:file_path, :purpose] => :environment do |t, args|
-    raise ArgumentError, "File path and purpose are required" unless args[:file_path] && args[:purpose]
-
-    file_path = args[:file_path]
-    purpose = args[:purpose]
+  desc "Upload CBT_DBT_Trainer document to OpenAI"
+  task :upload_cbt_dbt_trainer => :environment do
+    file_path = Rails.root.join('lib', 'assets', 'CBT_DBT_Trainer').to_s
+    purpose = "assistants" # or "fine-tune" based on your use case
     api_key = Rails.application.credentials.openai_api_key
 
     response = HTTParty.post(
