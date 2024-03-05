@@ -4,9 +4,9 @@ require 'httparty'
 namespace :openai do
   desc "Upload CBT_DBT_Trainer document to OpenAI"
   task :upload_cbt_dbt_trainer => :environment do
-    file_path = Rails.root.join('lib', 'assets', 'CBT_DBT_Trainer').to_s
+    file_path = Rails.root.join('lib', 'assets', 'CBT_DBT_Trainer.pdf').to_s
     purpose = "assistants" # or "fine-tune" based on your use case
-    api_key = Rails.application.credentials.openai_api_key
+    api_key = Rails.application.credentials.dig(:chatgpt, :api_key)
 
     response = HTTParty.post(
       "https://api.openai.com/v1/files",
