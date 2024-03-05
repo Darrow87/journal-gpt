@@ -6,7 +6,7 @@ class EntriesController < ApplicationController
     end
   
     def create
-      byebug
+   
       @entry = current_user.entries.build(entry_params)
       chatgpt_response = generate_chatgpt_responses(@entry.content)
     
